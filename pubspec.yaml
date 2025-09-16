@@ -1,0 +1,17 @@
+name: widget_that_fits
+description: "A new Flutter project."
+version: 0.0.1
+homepage: https://github.com/ky1vstar/widget_that_fits
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lint: ^2.8.0
