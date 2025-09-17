@@ -144,6 +144,81 @@ class RenderWidgetThatFits extends RenderBox with ContainerRenderObjectMixin<Ren
   }
 
   @override
+  double computeMinIntrinsicWidth(double height) {
+    return _computeIntrinsicDimension(
+      (child) => child.getMinIntrinsicWidth(height),
+    );
+  }
+
+  @override
+  double computeMaxIntrinsicWidth(double height) {
+    return _computeIntrinsicDimension(
+      (child) => child.getMaxIntrinsicWidth(height),
+    );
+  }
+
+  @override
+  double computeMinIntrinsicHeight(double width) {
+    return _computeIntrinsicDimension(
+      (child) => child.getMinIntrinsicHeight(width),
+    );
+  }
+
+  @override
+  double computeMaxIntrinsicHeight(double width) {
+    return _computeIntrinsicDimension(
+      (child) => child.getMaxIntrinsicHeight(width),
+    );
+  }
+
+  double _computeIntrinsicDimension(double Function(RenderBox child) mainChildSizeGetter) {
+    // If no children, return 0
+    if (firstChild == null) return 0.0;
+
+    // If axes is empty, the first child is always used
+    if (axes.isEmpty) {
+      return mainChildSizeGetter(firstChild!);
+    }
+
+    // For WidgetThatFits, we need to consider which child would likely be chosen.
+    // Since we don't have layout constraints here, we use heuristics:
+
+    // 1. Try to find a child whose intrinsic size suggests it would fit well
+    var bestChild = firstChild!;
+    var bestDimension = mainChildSizeGetter(bestChild);
+
+    // Look through children to find one with reasonable intrinsic dimensions
+    var child = firstChild;
+    while (child != null) {
+      final childParentData = child.parentData! as WidgetThatFitsParentData;
+      final childDimension = mainChildSizeGetter(child);
+
+      // Prefer smaller dimensions as they're more likely to fit
+      if (childDimension < bestDimension && childDimension > 0) {
+        bestChild = child;
+        bestDimension = childDimension;
+      }
+
+      child = childParentData.nextSibling;
+    }
+
+    return bestDimension;
+  }
+
+  @override
+  double? computeDistanceToActualBaseline(TextBaseline baseline) {
+    var child = firstChild;
+    while (child != null) {
+      final childParentData = child.parentData! as WidgetThatFitsParentData;
+      if (childParentData.isVisible) {
+        return child.getDistanceToActualBaseline(baseline);
+      }
+      child = childParentData.nextSibling;
+    }
+    return null;
+  }
+
+  @override
   void performLayout() {
     size = _layout(constraints, isDryLayout: false);
   }

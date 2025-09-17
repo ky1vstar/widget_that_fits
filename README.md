@@ -2,6 +2,10 @@
 
 A Flutter widget that displays the first child that fits the available space, inspired by SwiftUI's [ViewThatFits](https://developer.apple.com/documentation/swiftui/viewthatfits). This package allows you to provide multiple layout options and automatically shows the most preferred one that fits the current constraints.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ky1vstar/widget_that_fits/refs/heads/master/assets/demo.gif" alt="">
+</p>
+
 ## Features
 
 - Display the first child that fits the available space along the specified axes (horizontal, vertical, or both)
