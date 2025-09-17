@@ -72,7 +72,7 @@ class UploadProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WidgetThatFits(
-      direction: Axis.horizontal,
+      axes: const {Axis.horizontal},
       children: [
         Row(
           spacing: 8,

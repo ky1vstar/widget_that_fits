@@ -1,13 +1,14 @@
 name: widget_that_fits
-description: "A new Flutter project."
+description: "A widget that displays the first child that fits the available space."
 version: 0.0.1
 homepage: https://github.com/ky1vstar/widget_that_fits
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.4.0
   flutter: ">=1.17.0"
 
 dependencies:
+  collection: ^1.0.0
   flutter:
     sdk: flutter
 

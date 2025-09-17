@@ -1,39 +1,89 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# WidgetThatFits
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter widget that displays the first child that fits the available space, inspired by SwiftUI's [ViewThatFits](https://developer.apple.com/documentation/swiftui/viewthatfits). This package allows you to provide multiple layout options and automatically shows the most preferred one that fits the current constraints.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Display the first child that fits the available space along the specified axes (horizontal, vertical, or both)
+- Easily provide multiple layout options for responsive UIs
+- Simple API, similar in spirit to SwiftUI's ViewThatFits
+- No scaling or wrapping — just picks the first child that fits
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  widget_that_fits: <latest_version>
+```
+
+Import it in your Dart code:
+
+```dart
+import 'package:widget_that_fits/widget_that_fits.dart';
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Wrap your widgets with `WidgetThatFits` and provide alternative layouts as children. The widget will display the first child that fits the available space along the specified axes.
 
 ```dart
-const like = 'sample';
+WidgetThatFits(
+  axes: const {Axis.horizontal}, // or {Axis.vertical}, or both
+  children: [
+    Row(
+      children: [
+        Text('Detailed layout'),
+        SizedBox(width: 100, child: LinearProgressIndicator(value: 0.75)),
+      ],
+    ),
+    SizedBox(
+      width: 100,
+      child: LinearProgressIndicator(value: 0.75),
+    ),
+    Text('Compact'),
+  ],
+)
+```
+
+### Example: Upload Progress Widget
+
+```dart
+class UploadProgressWidget extends StatelessWidget {
+  const UploadProgressWidget({super.key, required this.uploadProgress});
+
+  static final _percentFormatter = NumberFormat.percentPattern();
+  final double uploadProgress;
+
+  @override
+  Widget build(BuildContext context) {
+    return WidgetThatFits(
+      axes: const {Axis.horizontal},
+      children: [
+        Row(
+          children: [
+            Text(_percentFormatter.format(uploadProgress)),
+            SizedBox(
+              width: 100,
+              child: LinearProgressIndicator(value: uploadProgress),
+            ),
+          ],
+        ),
+        SizedBox(
+          width: 100,
+          child: LinearProgressIndicator(value: uploadProgress),
+        ),
+        Text(_percentFormatter.format(uploadProgress)),
+      ],
+    );
+  }
+}
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- Inspired by SwiftUI's [ViewThatFits](https://developer.apple.com/documentation/swiftui/viewthatfits)
+- See the `/example` folder for a complete working example
+- Contributions and issues are welcome! Please file them on the [GitHub repository](https://github.com/your-repo/widget_that_fits)
+- Licensed under the MIT License
